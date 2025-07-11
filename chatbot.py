@@ -1,4 +1,5 @@
-# chatbot.py
+# © 2025 Faiza Farooqui - All Rights Reserved
+# This code is not licensed for reuse, distribution, or modification.
 import faiss
 import pickle
 import pandas as pd
@@ -10,34 +11,27 @@ from sentence_transformers import SentenceTransformer
 import ollama
 import os
 
-# Session info
+
 SESSION_ID = f"DS-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
 TODAY_DATE = datetime.now().strftime("%Y-%m-%d")
 os.makedirs("logs", exist_ok=True)
 os.makedirs("transcripts", exist_ok=True)
 
-# Load FAISS
+
 index = faiss.read_index("dearsoul_index.faiss")
 with open("dearsoul_meta.pkl", "rb") as f:
     metadata = pickle.load(f)
 df = pd.DataFrame(metadata)
-
-# Load embeddings
 embed_model = SentenceTransformer("all-MiniLM-L6-v2")
 
-# Load tagged quotes
 with open("Labeled_Quotes.txt", "r", encoding="utf-8") as f:
     quotes = [line.strip() for line in f if line.strip()]
-
-# Extracted topic-quote map
 def get_quote_by_topic(topic=None):
     if topic:
         filtered = [q for q in quotes if q.lower().startswith(f"[{topic.lower()}]")]
         if filtered:
             return random.choice(filtered).split("]", 1)[-1].strip()
     return random.choice(quotes).split("]", 1)[-1].strip() if "]" in quotes[0] else random.choice(quotes)
-
-# System persona
 system_prompt = {
     "role": "system",
     "content": (
@@ -63,16 +57,12 @@ def log_blocked_input(user_input):
 def log_chat(user_input, reply):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     time_only = datetime.now().strftime("%I:%M %p")
-
-    # CSV
     chat_row = pd.DataFrame([
         {"SessionID": SESSION_ID, "Timestamp": timestamp, "ChatTurn": f"🧍‍♀️ You said: {user_input}"},
         {"SessionID": SESSION_ID, "Timestamp": timestamp, "ChatTurn": f"🌸 DearSoul said: {reply}"}
     ])
     csv_path = f"logs/dearsoul_log_{TODAY_DATE}.csv"
     chat_row.to_csv(csv_path, mode="a", header=not os.path.exists(csv_path), index=False)
-
-    # WhatsApp-style .txt
     with open(f"transcripts/dearsoul_{TODAY_DATE}.txt", "a", encoding="utf-8") as f:
         f.write(f"You [{time_only}]: {user_input}\n")
         f.write(f"DearSoul [{time_only}]: {reply}\n\n")
@@ -86,8 +76,6 @@ def run_chat():
         if user_input.lower() in ['exit', 'quit']:
             print("🌸 DearSoul: Stay strong, bestie. You’ve got this! 💖")
             break
-
-        # Handle empty or emoji-only
         if not user_input or re.fullmatch(r'["\']{1,2}', user_input):
             print("⚠️  Type something real, bestie 💬\n")
             log_blocked_input(user_input)
@@ -102,7 +90,6 @@ def run_chat():
             log_blocked_input(user_input)
             continue
 
-        # Check for quote + topic
         match = re.match(r"quote\s*(\w+)?", user_input.lower())
         if match:
             topic = match.group(1) if match.group(1) else None
@@ -110,8 +97,6 @@ def run_chat():
             print(f"\n💡 Here's a DearSoul quote for you:\n\"{quote}\"\n")
             log_chat(user_input, quote)
             continue
-
-        # Full RAG response
         inspiration = get_inspiration(user_input)
         messages = [
             system_prompt,
@@ -131,7 +116,5 @@ def run_chat():
         reply = response['message']['content']
         print(f"\n🌸 DearSoul: {reply}\n")
         log_chat(user_input, reply)
-
-# Run it
 if __name__ == "__main__":
     run_chat()
