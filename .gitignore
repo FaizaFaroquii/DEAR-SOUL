@@ -1,6 +1,8 @@
-dearsoul_env/
 __pycache__/
 *.pkl
 *.faiss
 *.rar
-.DS_Store
+dearsoul_env/
+.env
+blocked_log.csv
+dearsoul_log.txt
