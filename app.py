@@ -1,4 +1,5 @@
-import streamlit as st
+# © 2025 Faiza Farooqui - All Rights Reserved
+# This code is not licensed for reuse, distribution, or modification.import streamlit as st
 import faiss
 import pickle
 import numpy as np
