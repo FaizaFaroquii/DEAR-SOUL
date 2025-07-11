@@ -1,10 +1,10 @@
 # 🌸 DearSoul – Your Motivational Bestie
 
-**DearSoul** is an emotionally intelligent AI chatbot that motivates users using powerful language models (LLMs), RAG (Retrieval-Augmented Generation), and a quote engine — all wrapped in a warm, best-friend tone 💬💖
+**DearSoul** is an emotionally intelligent AI chatbot that motivates users using powerful language models (LLMs), RAG (Retrieval-Augmented Generation), and a quote engine — all wrapped in a warm, best-friend tone 💖
 
 ---
 
-### 💡 Features
+###  Features
 - Retrieval-Augmented Generation (RAG) using FAISS
 - Mistral LLM-powered motivational replies
 - Smart quote matching (study, healing, sadness, etc.)
@@ -14,7 +14,7 @@
 
 ---
 
-### 💾 Full Project Download (360MB)
+# Full Project Download (360MB)
 
 Due to GitHub size limits, the full project (including FAISS index, full prompt dataset, and environment setup) is available here:
 
@@ -22,9 +22,18 @@ Due to GitHub size limits, the full project (including FAISS index, full prompt 
 
 ---
 
-### How to Run
+# How to Run
 
 1. Clone the repo:
    ```bash
    git clone https://github.com/FaizaFaroquii/DEAR-SOUL.git
    cd DEAR-SOUL
+# Setup environment (optional)
+python -m venv dearsoul_env
+dearsoul_env\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the app
+python chatbot.py
