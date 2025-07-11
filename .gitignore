@@ -1,0 +1,6 @@
+dearsoul_env/
+__pycache__/
+*.pkl
+*.faiss
+*.rar
+.DS_Store
